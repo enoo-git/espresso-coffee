@@ -37,10 +37,12 @@
     <h3>Meanwhile, espresso could have processed <br/>
         <span id="fogoCounter">0</span>
         <span>Transactions</span>
+<br/>
+        <br/>
+        <a id="retry" class="retry">Retry</a>
     </h3>
 
 </div>
-
 <script>
     let clickCount = 0;
     let fogoTPS = 20000; // Transactions per second
@@ -75,6 +77,13 @@
         }
     });
 
+    document.getElementById('retry').addEventListener('click', () => {
+        clickCount = 0;
+        clickCounter.innerText = `Clicks : 0`;
+        stats.style.opacity = '0'
+
+    });
+
     function startFogoCounter() {
         fogoInterval = setInterval(() => {
             if (startTime) {
@@ -99,5 +108,6 @@
         }
     }
 </script>
+<div class="footer">Caffeinated with love by @investingdams</div>
 </body>
 </html>
