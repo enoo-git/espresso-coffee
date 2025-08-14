@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Espresso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="main.css"/>
+</head>
+<body>
+
+
+<h1>Espresso</h1>
+
+<h2>Click 3 times on the coffee machine.</h2>
+<div id="clickCounter">Clicks : 0</div>
+<div id="fire" class="container" style="cursor: pointer;">
+    <div class="coffee-header">
+        <div class="coffee-header__buttons coffee-header__button-one"></div>
+        <div class="coffee-header__buttons coffee-header__button-two"></div>
+        <div class="coffee-header__display"></div>
+        <div class="coffee-header__details"></div>
+    </div>
+    <div class="coffee-medium">
+        <div class="coffe-medium__exit"></div>
+        <div class="coffee-medium__arm"></div>
+        <div class="coffee-medium__liquid"></div>
+        <div class="coffee-medium__smoke coffee-medium__smoke-one"></div>
+        <div class="coffee-medium__smoke coffee-medium__smoke-two"></div>
+        <div class="coffee-medium__smoke coffee-medium__smoke-three"></div>
+        <div class="coffee-medium__smoke coffee-medium__smoke-for"></div>
+        <div class="coffee-medium__cup"></div>
+    </div>
+    <div class="coffee-footer"></div>
+</div>
+<div class="stats">
+    <h2><span class="time"></span> seconds have passed</h2>
+    <h3>Meanwhile, espresso could have processed <br/>
+        <span id="fogoCounter">0</span>
+        <span>Transactions</span>
+    </h3>
+
+</div>
+
+<script>
+    let clickCount = 0;
+    let fogoTPS = 20000; // Transactions per second
+    let startTime = null;
+    let fogoCounter = document.getElementById('fogoCounter');
+    let clickCounter = document.getElementById('clickCounter');
+
+
+    const firstFlame = document.querySelector('.flame-first');
+    const flameSecond = document.querySelector('.flame-second');
+    const flameThird = document.querySelector('.flame-third');
+    const flameLast = document.querySelector('.flame-last');
+    const stats = document.querySelector('.stats');
+    const fire = document.querySelector('.fire');
+    const time = document.querySelector('.time');
+    const fireElement = document.getElementById('fire');
+
+    document.getElementById('fire').addEventListener('click', () => {
+        setTimeout(() => fireElement.classList.remove('shake'), 300);
+        if (clickCount === 0) {
+            startTime = Date.now();
+            startFogoCounter();
+        }
+        if (clickCount < 3) {
+            clickCount++;
+        }
+
+        clickCounter.innerText = `Clicks : ${clickCount}`;
+
+        if (clickCount === 3) {
+            stopFogoCounter()
+        }
+    });
+
+    function startFogoCounter() {
+        fogoInterval = setInterval(() => {
+            if (startTime) {
+                const elapsed = (Date.now() - startTime) / 1000;
+                const transactions = Math.floor(elapsed * fogoTPS);
+                fogoCounter.innerText = transactions.toLocaleString();
+            }
+        }, 100);
+    }
+
+    function stopFogoCounter() {
+        if (fogoInterval) {
+            clearInterval(fogoInterval);
+            fogoInterval = null;
+
+            const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
+            const transactions = Math.floor(totalTime * fogoTPS);
+            time.innerText  = totalTime;
+            stats.style.opacity = '1'
+
+
+        }
+    }
+</script>
+</body>
+</html>
